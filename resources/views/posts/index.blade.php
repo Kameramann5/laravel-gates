@@ -9,7 +9,7 @@
         @forelse($posts as $post)
             <div class="mb-3">
                 <h3>{{$post->title}}</h3>
-                Автор:
+                Автор: {{$post->user->name}}
                 | <a href="" class="text-primary">Редактировать</a>
                 | <a href="" class="text-danger">Удалить</a>
             </div>

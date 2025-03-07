@@ -23,7 +23,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Новая статья</a>
+                        <a class="nav-link active" aria-current="page" href="{{route ('posts.create')}}">Новая статья</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{route('logout')}}">Выйти</a>

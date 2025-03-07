@@ -11,7 +11,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts=Post::all();
+      //  $posts=Post::all();
+        $posts=Post::with('user')->orderBy ('id','desc')->get();
         return view('posts.index',[
             'posts'=> $posts
         ]);
@@ -22,7 +23,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -30,7 +31,14 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title'=>['required','max:255'],
+        ]);
+        Post::create([
+            'title'=>$validated['title'],
+            'user_id'=>auth()->user()->id,
+        ]);
+        return redirect()->route('home');
     }
 
     /**
