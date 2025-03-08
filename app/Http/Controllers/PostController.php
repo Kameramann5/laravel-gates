@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Gate;
+
 class PostController extends Controller
 {
     /**
@@ -23,6 +25,12 @@ class PostController extends Controller
      */
     public function create()
     {
+        //Gate::authorize('create-poat');
+        //если юзеру запрещено то вернуть ошибку
+     if(Gate::denies('create-post'))
+     {
+         abort (403);
+     }
         return view('posts.create');
     }
 
@@ -31,6 +39,10 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        if(Gate::denies('create-post'))
+        {
+            abort (403);
+        }
         $validated = $request->validate([
             'title'=>['required','max:255'],
         ]);
@@ -54,7 +66,15 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post=Post::query ()->findOrFail ($id);
+        if(!Gate::allows('update-post',$post))
+        {
+            abort (403);
+        }
+
+        return view('posts.edit',[
+           'post'=>$post,
+        ]);
     }
 
     /**
@@ -62,7 +82,16 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $post=Post::query ()->findOrFail ($id);
+        if(!Gate::allows('update-post',$post))
+        {
+            abort (403);
+        }
+        $validated = $request->validate([
+            'title'=>['required','max:255'],
+        ]);
+        $post->update($validated);
+        return redirect ()->route('home')->with ('success','Успешно обновлено');
     }
 
     /**
@@ -70,6 +99,15 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
+        $post=Post::query ()->findOrFail ($id);
+        if(!Gate::allows('delete-post',$post))
+        {
+            abort (403);
+        }
+        $post->delete ();
+        return redirect ()->route('home')->with ('success','Успешно удалено');
+
+
     }
 }

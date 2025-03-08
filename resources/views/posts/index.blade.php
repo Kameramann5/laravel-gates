@@ -10,8 +10,16 @@
             <div class="mb-3">
                 <h3>{{$post->title}}</h3>
                 Автор: {{$post->user->name}}
-                | <a href="" class="text-primary">Редактировать</a>
-                | <a href="" class="text-danger">Удалить</a>
+                @can('update-post',$post)
+                 <a href="{{route('posts.edit',$post->id) }}" class="text-primary">Редактировать</a>
+                @endcan
+                @can('delete-post',$post)
+                <form action="{{route('posts.destroy',$post->id)}}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button class="brn btn-link link-danger" type="submit">Удалить</button>
+                </form>
+                @endcan
             </div>
         @empty
             <p>Нету статей</p>
