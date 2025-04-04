@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+/*
         //разрешить все действия админу
         Gate::before (function (User $user, string $ability) {
             //     if($user->role===3 && $ability!='update-post') {
@@ -50,5 +50,9 @@ class AppServiceProvider extends ServiceProvider
             //если только админ может удалять статьи то   return $user->role === 3;
             return $user->id === $post->user_id || $user->role === 3  || $user->role === 2;
         });
+
+        */
+
+
     }
 }

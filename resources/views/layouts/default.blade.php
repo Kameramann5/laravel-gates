@@ -21,7 +21,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Привет {{auth()->user()->name}}</a>
                     </li>
-                @can('create-post')
+                @can('create',\App\Models\Post::class)
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{route ('posts.create')}}">Новая статья</a>
                     </li>

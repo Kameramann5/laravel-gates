@@ -26,11 +26,16 @@ class PostController extends Controller
     public function create()
     {
         //Gate::authorize('create-poat');
+       // Gate::authorize('create',Post::class);
+        if (\request()->user()->cannot('create', Post::class)) {
+            abort (403);
+        }
         //если юзеру запрещено то вернуть ошибку
+        /*
      if(Gate::denies('create-post'))
      {
          abort (403);
-     }
+     }*/
         return view('posts.create');
     }
 
@@ -39,10 +44,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        if(Gate::denies('create-post'))
+        Gate::authorize('create',Post::class);
+       /* if(Gate::denies('create-post'))
         {
             abort (403);
-        }
+        }*/
         $validated = $request->validate([
             'title'=>['required','max:255'],
         ]);
@@ -64,13 +70,16 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        $post=Post::query ()->findOrFail ($id);
+        Gate::authorize ('update',$post);
+        //$post=Post::query ()->findOrFail ($id);
+
+        /*
         if(!Gate::allows('update-post',$post))
         {
             abort (403);
-        }
+        }*/
 
         return view('posts.edit',[
            'post'=>$post,
@@ -80,13 +89,15 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        $post=Post::query ()->findOrFail ($id);
+        //$post=Post::query ()->findOrFail ($id);
+        Gate::authorize ('update',$post);
+        /*
         if(!Gate::allows('update-post',$post))
         {
             abort (403);
-        }
+        }*/
         $validated = $request->validate([
             'title'=>['required','max:255'],
         ]);
@@ -97,14 +108,15 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-
-        $post=Post::query ()->findOrFail ($id);
+        Gate::authorize ('delete',$post);
+        //$post=Post::query ()->findOrFail ($id);
+        /*
         if(!Gate::allows('delete-post',$post))
         {
             abort (403);
-        }
+        }*/
         $post->delete ();
         return redirect ()->route('home')->with ('success','Успешно удалено');
 

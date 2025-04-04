@@ -27,9 +27,9 @@ Route::middleware('auth')->group(function() {
     Route::get('/posts/create',[\App\Http\Controllers\PostController::class,'create'])->name('posts.create');
     // тот же самый запрет что и в контроллере PostController Route::get('/posts/create',[\App\Http\Controllers\PostController::class,'create'])->name('posts.create')->can('create-post');
     Route::post('/posts',[\App\Http\Controllers\PostController::class,'store'])->name('posts.store');
-    Route::get('/posts/{id}/edit',[\App\Http\Controllers\PostController::class,'edit'])->name('posts.edit');
-    Route::put('/posts/{id}',[\App\Http\Controllers\PostController::class,'update'])->name('posts.update');
-    Route::delete('/posts/{id}',[\App\Http\Controllers\PostController::class,'destroy'])->name('posts.destroy');
+    Route::get('/posts/{post}/edit',[\App\Http\Controllers\PostController::class,'edit'])->name('posts.edit');
+    Route::put('/posts/{post}',[\App\Http\Controllers\PostController::class,'update'])->name('posts.update');
+    Route::delete('/posts/{post}',[\App\Http\Controllers\PostController::class,'destroy'])->name('posts.destroy');
 });
 
 
